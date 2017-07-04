@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class backgroundHue : MonoBehaviour {
+public class BackgroundHue : MonoBehaviour {
+    
 
     Camera cam;
     int index = 0;

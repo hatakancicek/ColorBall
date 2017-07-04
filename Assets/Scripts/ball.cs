@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ball : MonoBehaviour {
+public class Ball : MonoBehaviour {
 
     bool isDrag = false;
     Vector3 mausePos;
