@@ -20,6 +20,11 @@ public class Brick : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<Ball>())
-            Destroy(gameObject);
+            GetComponent<Animator>().SetTrigger("Death");
+    }
+
+    public void Death()
+    {
+        Destroy(gameObject);
     }
 }
