@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class BallSpawner : MonoBehaviour {
 
-    public int[] balls;
     public GameObject ball;
 
     int index;
-    Color[] ballColors = { new Vector4(50f,50f,255f,255f), new Vector4(50f, 255f, 50f, 255f), new Vector4(255f, 50f, 50f, 255f) };
+    Color[] mainColors = { new Vector4(50f,50f,255f,255f), new Vector4(50f, 255f, 50f, 255f), new Vector4(255f, 50f, 50f, 255f) };
 
     // Use this for initialization
     void Start () {
@@ -23,6 +22,6 @@ public class BallSpawner : MonoBehaviour {
     void SpawnBall()
     {
         GameObject spawnedBall = Instantiate(ball, transform.position, Quaternion.identity) as GameObject;
-        spawnedBall.GetComponent<SpriteRenderer>().color = ballColors[1];
+        spawnedBall.GetComponent<SpriteRenderer>().color = mainColors[1];
     }
 }

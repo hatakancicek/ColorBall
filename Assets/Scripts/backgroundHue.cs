@@ -35,6 +35,6 @@ public class BackgroundHue : MonoBehaviour {
 
         if(isGoingDark)
             cam.backgroundColor = cam.backgroundColor - (colorParam[index] / 4080);
-        
+ 
     }
 }
