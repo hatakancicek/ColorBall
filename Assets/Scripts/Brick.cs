@@ -32,15 +32,13 @@ public class Brick : MonoBehaviour {
             collision.gameObject.GetComponent<Ball>().ChangeColor(GetComponent<SpriteRenderer>().color);
         }
 
-        if (collision.gameObject.GetComponent<Finish>())
-        {
-            Debug.Log("Lost");
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("Lost");
+        GlobalController globe = FindObjectOfType<GlobalController>();
+        globe.GetComponent<GlobalController>().LooseLife();
+        Death();
     }
 
     public void Vanish()

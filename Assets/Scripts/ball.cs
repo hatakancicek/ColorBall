@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
-    public bool isDrag = false;
+    public bool isDrag = false, disabled = false;
+    public Vector2 newVelocity;
+    public Vector3 mausePos;
+   
     Transform arrow;
     Vector3[] exPositions = {new Vector3(0f,-20f,0f), new Vector3(0f,-20f,0f) };
     bool isLaunched = false, isResetting = false;
-    public Vector3 mausePos;
     ParticleSystem ps;
     int loopCount = 0;
     Rigidbody2D rb;
-    public Vector2 newVelocity;
     Vector3 targetPosition;
 
     // Use this for initialization
@@ -27,27 +28,32 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        if (!isLaunched) {
-
-            CalculateVelocity();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                mausePos = Input.mousePosition;
-                isDrag = true;
-            }
-
-            else if (Input.GetMouseButtonUp(0) && isDrag)
-            {
-                LaunchBall();
-                isDrag = false;
-            }
-        }
-
-        else if (isResetting)
+        if (!disabled)
         {
-            MoveBall();
+
+            if (!isLaunched)
+            {
+
+                CalculateVelocity();
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    mausePos = Input.mousePosition;
+                    isDrag = true;
+                }
+
+                else if (Input.GetMouseButtonUp(0) && isDrag)
+                {
+                    LaunchBall();
+                    isDrag = false;
+                }
+            }
+
+            else if (isResetting)
+            {
+                MoveBall();
+            }
+
         }
     }
 
@@ -81,20 +87,27 @@ public class Ball : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Mathf.Abs(transform.position.y - exPositions[1].y) == 0)
+        if (collision.gameObject.GetComponent<Bottom>()) {
+            ResetBall();
+            collision.gameObject.GetComponent<Bottom>().SpawnBricks();
+            collision.gameObject.GetComponent<Bottom>().MoveDown();
+        }
+        else
+            checkLoop();
+    }
+
+    void checkLoop()
+    {
+        if (Mathf.Abs(transform.position.y - exPositions[1].y) < 0.001)
         {
             if (++loopCount == 5)
             {
                 ResetBall();
             }
+
+            exPositions[1] = exPositions[0];
+            exPositions[0] = transform.position;
         }
-
-
-        else if (collision.gameObject.GetComponent<Bottom>())
-            ResetBall();
-        
-        exPositions[1] = exPositions[0];
-        exPositions[0] = transform.position;
     }
 
     void CalculateVelocity()
@@ -120,15 +133,9 @@ public class Ball : MonoBehaviour {
     void ResetBall()
     {
         GetComponent<CircleCollider2D>().enabled = false;
-        BrickSpawner[] spawners = FindObjectsOfType<BrickSpawner>();
-        foreach (BrickSpawner spawner in spawners)
-            spawner.SpawnBrick();
-        Brick[] bricks = FindObjectsOfType<Brick>();
-        foreach (Brick brick in bricks)
-            brick.Fall();
         GetComponent<Rigidbody2D>().velocity = new Vector3(0f, 0f, 0f);
-        isResetting = true;
         newVelocity = Vector3.zero;
+        isResetting = true;
     }
 
     public void ChangeColor(Color col)
