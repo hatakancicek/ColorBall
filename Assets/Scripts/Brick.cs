@@ -24,6 +24,7 @@ public class Brick : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<Ball>()) {
+
             if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == new Color(50f, 255f, 50f, 255f))
             {
                 GetComponent<Animator>().SetTrigger("Death");
@@ -31,10 +32,15 @@ public class Brick : MonoBehaviour {
             collision.gameObject.GetComponent<Ball>().ChangeColor(GetComponent<SpriteRenderer>().color);
         }
 
-        if (collision.gameObject.GetComponent<Bottom>())
+        if (collision.gameObject.GetComponent<Finish>())
         {
             Debug.Log("Lost");
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Debug.Log("Lost");
     }
 
     public void Vanish()

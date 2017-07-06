@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
+    public bool isDrag = false;
+    Transform arrow;
     Vector3[] exPositions = {new Vector3(0f,-20f,0f), new Vector3(0f,-20f,0f) };
-    bool isDrag = false, isLaunched = false, isResetting = false;
-    Vector3 mausePos;
+    bool isLaunched = false, isResetting = false;
+    public Vector3 mausePos;
     ParticleSystem ps;
     int loopCount = 0;
+    Rigidbody2D rb;
+    public Vector2 newVelocity;
+    Vector3 targetPosition;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start ()
+    {
+        targetPosition = transform.parent.position;
+        newVelocity = Vector2.zero;
+        rb = GetComponent<Rigidbody2D>();
         ps = transform.GetChild(0).GetComponent<ParticleSystem>();
         ps.startColor = GetComponent<SpriteRenderer>().color;
 	}
@@ -20,46 +29,57 @@ public class Ball : MonoBehaviour {
 	void Update () {
 
         if (!isLaunched) {
-            if (!isDrag)
+
+            CalculateVelocity();
+
+            if (Input.GetMouseButtonDown(0))
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    mausePos = Input.mousePosition;
-                    isDrag = true;
-                }
+                mausePos = Input.mousePosition;
+                isDrag = true;
             }
-            else
+
+            else if (Input.GetMouseButtonUp(0) && isDrag)
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    isDrag = false;
-                    if (mausePos.y - Input.mousePosition.y > 0)
-                    {
-                        GetComponent<Rigidbody2D>().velocity = (mausePos - Input.mousePosition) / 35;
-                        ps.Play();
-                        isLaunched = true;
-                    }
-                }
+                LaunchBall();
+                isDrag = false;
             }
         }
 
-        else if(isResetting)
+        else if (isResetting)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), new Vector2(0, -4f), 3 * Time.deltaTime);
-            if (transform.position == new Vector3(0, -4f, 0f))
-            {
-                exPositions[0] = new Vector3(0f, -20f, 0f);
-                exPositions[1] = new Vector3(0f, -20f, 0f);
-                ps.Stop();
-                isResetting = false;
-                isLaunched = false;
-                loopCount = 0;
-                GetComponent<CircleCollider2D>().enabled = true;
-            }
+            MoveBall();
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void MoveBall()
+    {
+        transform.position = Vector2.MoveTowards((Vector2)transform.position, targetPosition, 10 * Time.deltaTime);
+        if (((Vector2)(transform.position - targetPosition)).magnitude < 0.001f)
+        {
+            exPositions[0] = new Vector3(0f, -20f, 0f);
+            exPositions[1] = new Vector3(0f, -20f, 0f);
+            ps.Stop();
+            isResetting = false;
+            isLaunched = false;
+            loopCount = 0;
+            GetComponent<CircleCollider2D>().enabled = true;
+        }
+    }
+
+    void LaunchBall()
+    {
+        if (newVelocity.magnitude > 0)
+        {
+            isDrag = false;
+            rb.velocity = newVelocity;
+            ps.Play();
+            isLaunched = true;
+        }
+
+        newVelocity = Vector2.zero;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (Mathf.Abs(transform.position.y - exPositions[1].y) == 0)
         {
@@ -77,7 +97,27 @@ public class Ball : MonoBehaviour {
         exPositions[0] = transform.position;
     }
 
-    private void ResetBall()
+    void CalculateVelocity()
+    {
+        if (mausePos.y - Input.mousePosition.y > 0)
+        {
+            Vector2 temp = new Vector3();
+
+            temp = (mausePos - Input.mousePosition) / 20;
+            if (temp.magnitude < 3f)
+                temp = Vector2.zero;
+
+            else if (temp.magnitude > 20f)
+            {
+                temp.Normalize();
+                temp *= 20f;
+            }
+
+            newVelocity = temp;
+        }
+    }
+
+    void ResetBall()
     {
         GetComponent<CircleCollider2D>().enabled = false;
         BrickSpawner[] spawners = FindObjectsOfType<BrickSpawner>();
@@ -88,6 +128,7 @@ public class Ball : MonoBehaviour {
             brick.Fall();
         GetComponent<Rigidbody2D>().velocity = new Vector3(0f, 0f, 0f);
         isResetting = true;
+        newVelocity = Vector3.zero;
     }
 
     public void ChangeColor(Color col)

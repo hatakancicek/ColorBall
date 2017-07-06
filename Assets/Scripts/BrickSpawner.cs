@@ -22,5 +22,7 @@ public class BrickSpawner : MonoBehaviour {
         
         if(Random.Range(0f,1f) < difficulty/100)
             Instantiate(brick, transform.position, Quaternion.identity);
+        if(difficulty < 60f)
+            difficulty += 0.1f;
     }
 }
