@@ -108,7 +108,7 @@ public class Ball : MonoBehaviour {
 
     private void CheckLoop()
     {
-        if (Mathf.Abs(transform.position.y - exPositions[1].y) < 0.001)
+        if (Mathf.Abs(transform.position.y - exPositions[1].y) < 0.030)
         {
             if (++loopCount == 5)
             {
