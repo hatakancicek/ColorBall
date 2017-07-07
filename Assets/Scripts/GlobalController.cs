@@ -8,53 +8,55 @@ public class GlobalController : MonoBehaviour {
     public GameObject[] hearts;
     public GameObject canvas;
     public GameObject ballSpawner;
+    public Ball ball;
+    public Animator animator;
+    public BrickSpawnerController brickSpawnerController;
 
-    Brick[] bricks;
-    Animator animator;
-
-    void Start()
-    {
-        animator = canvas.GetComponent<Animator>();
-    }
+    private Brick[] bricks;
 
     public void LooseLife()
     {
-        if (Global.lifeCount == 0)
+        if (Globals.lifeCount == 0)
             LooseGame();
         else
-            hearts[--Global.lifeCount].GetComponent<Image>().color = Color.white;
+            hearts[--Globals.lifeCount].GetComponent<Image>().color = Color.white;
     }
 
     public void EarnLife()
     {
-        if (Global.lifeCount < 3)
+        if (Globals.lifeCount < 3)
         {
-            hearts[Global.lifeCount].GetComponent<Image>().color = new Color(1f, 24f/255f, 24f / 255f, 1f);
-            Global.lifeCount++;
+            hearts[Globals.lifeCount].GetComponent<Image>().color = new Color(1f, 24f/255f, 24f / 255f, 1f);
+            Globals.lifeCount++;
         }
     }
 
     public void Restart()
     {
-        Global.lifeCount = 3;
-        bricks = FindObjectsOfType<Brick>();
+        RefillLife();
+        animator.SetTrigger("Choose");
+        Globals.lifeCount = 3;
+        FindBricks();
         foreach (Brick brick in bricks)
            brick.GetComponent<Brick>().Death();
-
+        Globals.score = 0;
+        brickSpawnerController.SpawnBricks();
+        if (ball.disabled)
+            ball.disabled = false;
     }
 
-    void ContinueGame()
+    public void ContinueGame()
     {
-
-        bricks = FindObjectsOfType<Brick>();
-        foreach (Brick brick in bricks)
-            if (brick.transform.position.y < 0f)
-                brick.GetComponent<Brick>().Death();
+        RefillLife();
         animator.SetTrigger("Choose");
-        Ball target = ballSpawner.transform.GetChild(1).GetComponent<Ball>();
-
-        if (target)
-            target.disabled = false;
+        Globals.lifeCount = 3;
+        FindBricks();
+        foreach (Brick brick in bricks)
+            if(brick.transform.position.y < 0f)
+                brick.GetComponent<Brick>().Death();
+        brickSpawnerController.SpawnBricks();
+        if (ball.disabled)
+            ball.disabled = false;
     }
 
     public void LooseGame()
@@ -65,8 +67,26 @@ public class GlobalController : MonoBehaviour {
         animator.SetTrigger("Lost");
     }
 
-    public void UpdateScore()
+    public void Freeze()
     {
-
+        brickSpawnerController.turnsAsFrozen = 3;
     }
+
+    public void SuperBall()
+    {
+        ball.SuperBall();
+        brickSpawnerController.SuperBall();
+    }
+
+    private void RefillLife()
+    {
+        for (int i = 0; i < 3; i++)
+            EarnLife();
+    }
+
+    private void FindBricks()
+    {
+        bricks = FindObjectsOfType<Brick>();
+    }
+
 }
