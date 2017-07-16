@@ -36,6 +36,7 @@ public class Ball : MonoBehaviour {
 	private void DragStart() {
 		dragStartPosition = Input.mousePosition;
 		InvokeRepeating ("DragStay", 0, 1 / 60f);
+		launchVelocity = Vector3.zero;
 	}
 
 	private void DragStay() {

@@ -34,7 +34,7 @@ public class Arrow : MonoBehaviour {
     {
 		Vector3 ballVelocity = ball.GetLaunchVelocity ();
 		float angle = Vector3.Angle(ballVelocity, Vector3.right) - 90f;
+		transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
 		transform.localScale = new Vector3(0.5f, ballVelocity.magnitude / (-6), 1f);
-        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
     }
 }
