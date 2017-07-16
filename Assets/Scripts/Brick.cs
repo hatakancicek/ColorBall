@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class Brick : MonoBehaviour {
 
+<<<<<<< HEAD
 	public Sprite[] brickSprites;
 	public GameObject ice;
     
     bool isFalling = false, isSuper = false, isFreeze = false;
+=======
+    
+    bool isFalling = false, isSuper = false;
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     Vector2 position = new Vector2(0f,0f);
 
     // Use this for initialization
     void Start () {
         GetComponentInChildren<SpriteRenderer>().color = Globals.mainColors[Random.Range(1, 3)] / 255;
         Globals.brickCount++;
+<<<<<<< HEAD
 		GetComponentInChildren<SpriteRenderer> ().sprite = brickSprites [Globals.brickType];
 		GetComponent<SpriteRenderer>().sprite = brickSprites [Globals.brickType];
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 	}
 	
 	// Update is called once per frame
@@ -30,7 +38,11 @@ public class Brick : MonoBehaviour {
     {
         if (collision.gameObject.GetComponent<Ball>()) {
 
+<<<<<<< HEAD
 			if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white || isFreeze)
+=======
+            if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white)
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
             {
                 GetComponent<Animator>().SetTrigger("Death");
             }
@@ -71,11 +83,14 @@ public class Brick : MonoBehaviour {
 
     public void Fall()
     {
+<<<<<<< HEAD
 		if (isFreeze) {
 			ice.SetActive (false);
 			isFreeze = false;
 		}
 
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
         if(isSuper)
         {
             isSuper = false;

@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
+<<<<<<< HEAD
 	public bool isDrag = false, disabled = false, isEasy = false;
+=======
+    public bool isDrag = false, disabled = false;
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     public ParticleSystem particles;
     public CircleCollider2D circleCollider;
     public Rigidbody2D rigidBody;
@@ -14,15 +18,22 @@ public class Ball : MonoBehaviour {
     public Vector2 newVelocity = Vector2.zero;
     public Vector3 startPosition;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     private bool isLaunched = false, isResetting = false, isSuper = false;
     private int loopCount = 0;
     private Vector3 targetPosition;
     private Vector3 basicVector = new Vector3(0f, -20f, 0f);
     private Vector3[] exPositions = {new Vector3(0f,-20f,0f), new Vector3(0f,-20f,0f) };
+<<<<<<< HEAD
 
 	void Awake() {
 		Application.targetFrameRate = 60;
 	}
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 
     // Use this for initialization
     void Start ()
@@ -105,7 +116,11 @@ public class Ball : MonoBehaviour {
             ResetBall();
             brickSpawnerController.SpawnBricks();
         }
+<<<<<<< HEAD
 		else if(!(collision.gameObject.GetComponent<Brick>()))
+=======
+        else
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
             CheckLoop();
     }
 
@@ -143,6 +158,7 @@ public class Ball : MonoBehaviour {
         }
     }
 
+<<<<<<< HEAD
 	private void BreakLoop () {
 		if (isSuper) {
 			ChangeColor (Color.white);
@@ -180,5 +196,18 @@ public class Ball : MonoBehaviour {
 			loopCount = 0;
 			newVelocity = Vector3.zero;
 		}
+=======
+    private void ResetBall()
+    {
+        if (isSuper)
+        {
+            ChangeColor(Color.white);
+            isSuper = false;
+        }
+        circleCollider.enabled = false;
+        rigidBody.velocity = Vector3.zero;
+        newVelocity = Vector3.zero;
+        isResetting = true;
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     }
 }

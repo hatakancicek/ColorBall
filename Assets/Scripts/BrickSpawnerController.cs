@@ -7,8 +7,11 @@ public class BrickSpawnerController : MonoBehaviour {
     public int turnsAsFrozen = 0;
     public BrickSpawner[] brickSpawners;
 
+<<<<<<< HEAD
 	private int luckySpawnerID = 0;
 
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 	// Use this for initialization
 	void Start () {
         SpawnBricks();
@@ -18,9 +21,13 @@ public class BrickSpawnerController : MonoBehaviour {
     {
         if (turnsAsFrozen == 0)
         {
+<<<<<<< HEAD
 			while(luckySpawnerID == Globals.previouslySelectedSpawner)
             	luckySpawnerID = Random.Range(0, 5);
 			Globals.previouslySelectedSpawner = luckySpawnerID;
+=======
+            int luckySpawnerID = Random.Range(0, 5);
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
             brickSpawners[luckySpawnerID].isLucky = true;
             foreach (BrickSpawner brickSpawner in brickSpawners)
                 brickSpawner.SpawnBrick();
