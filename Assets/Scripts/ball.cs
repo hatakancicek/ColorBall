@@ -14,6 +14,8 @@ public class Ball : MonoBehaviour {
 
 	private GameTouchArea gameTouchArea;
 	private Vector3 launchVelocity, targetPosition, dragStartPosition;
+	private Vector3[] exPositions = {new Vector3(-20f,-20f,-20f), new Vector3(-20f,-20f,-20f)};
+	private int loopCount = 0;
 
     // Use this for initialization
     void Start ()
@@ -32,6 +34,18 @@ public class Ball : MonoBehaviour {
 		controller.SuperBall += SuperBall;
 
     }
+
+	public void LoopCheck() {
+		Debug.Log (Mathf.Abs (exPositions [0].y - transform.position.y));
+		if (Mathf.Abs(exPositions [0].y - transform.position.y) < 0.02f) {
+			loopCount++;
+			if (loopCount >= 5)
+				ResetBall ();
+		} else {
+			exPositions [0] = exPositions [1];
+			exPositions [1] = transform.position;
+		}
+	}
 
 	private void DragStart() {
 		dragStartPosition = Input.mousePosition;
@@ -91,6 +105,9 @@ public class Ball : MonoBehaviour {
 	}
 
 	public void ResetBall() {
+		loopCount = 0;
+		exPositions [0] = new Vector3 (-20f, -20f, -20f);
+		exPositions [1] = exPositions [0];
 		rigidBody.velocity = Vector3.zero;
 		particles.Stop ();
 		if (spriteRenderer.color == Globals.gold)
@@ -103,6 +120,12 @@ public class Ball : MonoBehaviour {
 
 	public void SuperBall() {
 		ChangeColor(Globals.gold);
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (!(collision.gameObject.GetComponent<Brick> ()))
+			LoopCheck ();
 	}
 
 }
