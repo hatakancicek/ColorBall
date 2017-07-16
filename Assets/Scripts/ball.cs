@@ -1,234 +1,107 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Ball : MonoBehaviour {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public bool isDrag = false, disabled = false, isEasy = false;
-=======
-    public bool isDrag = false, disabled = false;
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
-    public bool isDrag = false, disabled = false;
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-    public ParticleSystem particles;
-    public CircleCollider2D circleCollider;
-    public Rigidbody2D rigidBody;
-    public SpriteRenderer spriteRenderer;
-    public BrickSpawnerController brickSpawnerController;
-    public Transform arrow;
-    public Vector2 newVelocity = Vector2.zero;
-    public Vector3 startPosition;
+	public ParticleSystem particles;
+	public CircleCollider2D circleCollider;
+	public Rigidbody2D rigidBody;
+	public SpriteRenderer spriteRenderer;
+	public Bottom bottom;
+	public GameController controller;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
-
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-    private bool isLaunched = false, isResetting = false, isSuper = false;
-    private int loopCount = 0;
-    private Vector3 targetPosition;
-    private Vector3 basicVector = new Vector3(0f, -20f, 0f);
-    private Vector3[] exPositions = {new Vector3(0f,-20f,0f), new Vector3(0f,-20f,0f) };
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-	void Awake() {
-		Application.targetFrameRate = 60;
-	}
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+	private GameTouchArea gameTouchArea;
+	private Vector3 launchVelocity, targetPosition, dragStartPosition;
 
     // Use this for initialization
     void Start ()
     {
-        targetPosition = transform.parent.position;
-#pragma warning disable CS0618 // Type or member is obsolete
+		targetPosition = transform.position;
+		particles.Stop ();
         particles.startColor = GetComponent<SpriteRenderer>().color;
-#pragma warning restore CS0618 // Type or member is obsolete
         spriteRenderer.color = Color.white;
+		gameTouchArea = FindObjectOfType<GameTouchArea> ();
+		if (gameTouchArea) {
+			gameTouchArea.touchDownEvent += DragStart;
+			gameTouchArea.touchUpEvent += DragEnd;
+		}
+		if (bottom)
+			bottom.ballTouchedBottom += ResetBall;
+		controller.SuperBall += SuperBall;
+
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (!disabled)
-        {
-            if (!isLaunched && isDrag)
-            {
-                CalculateVelocity();
 
-                if (Input.GetMouseButtonUp(0) && isDrag)
-                {
-                    LaunchBall();
-                    isDrag = false;
-                }
-            }
+	private void DragStart() {
+		dragStartPosition = Input.mousePosition;
+		InvokeRepeating ("DragStay", 0, 1 / 60f);
+	}
 
-            else if (isResetting)
-            {
-                MoveBall();
-            }
+	private void DragStay() {
+		CalculateVelocity ();
+	}
 
-        }
-    }
+	private void DragEnd() {
+		CancelInvoke ();
+		if (launchVelocity.magnitude > Vector3.zero.magnitude) {
+			gameTouchArea.gameObject.SetActive (false);
+			rigidBody.velocity = launchVelocity;
+			particles.Play ();
+		}
+	}
 
     public void ChangeColor(Color color)
     {
         spriteRenderer.color = color;
-#pragma warning disable CS0618 // Type or member is obsolete
         particles.startColor = color;
-#pragma warning restore CS0618 // Type or member is obsolete
     }
 
-    public void SuperBall()
-    {
-        ChangeColor(new Color(255f, 215f, 0));
-        isSuper = true;
-    }
-
-    private void MoveBall()
+	private void MoveBall()
     {
         transform.position = Vector2.MoveTowards((Vector2)transform.position, targetPosition, 10 * Time.deltaTime);
-        if (((Vector2)(transform.position - targetPosition)).magnitude < 0.001f)
-        {
-            exPositions[0] = basicVector;
-            exPositions[1] = basicVector;
-            particles.Stop();
-            isResetting = false;
-            isLaunched = false;
-            loopCount = 0;
-            GetComponent<CircleCollider2D>().enabled = true;
-        }
-    }
-
-    private void LaunchBall()
-    {
-        if (newVelocity.magnitude > 0)
-        {
-            isDrag = false;
-            rigidBody.velocity = newVelocity;
-            particles.Play();
-            isLaunched = true;
-        }
-
-        newVelocity = Vector2.zero;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<Bottom>()) {
-            ResetBall();
-            brickSpawnerController.SpawnBricks();
-        }
-<<<<<<< HEAD
-<<<<<<< HEAD
-		else if(!(collision.gameObject.GetComponent<Brick>()))
-=======
-        else
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
-        else
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-            CheckLoop();
-    }
-
-    private void CheckLoop()
-    {
-        if (Mathf.Abs(transform.position.y - exPositions[1].y) < 0.030)
-        {
-            if (++loopCount == 5)
-            {
-				BreakLoop();
-            }
-        }
-
-        exPositions[1] = exPositions[0];
-        exPositions[0] = transform.position;
+		if (transform.position == targetPosition) {
+			CancelInvoke ();
+			gameTouchArea.gameObject.SetActive (true);
+		}
     }
 
     private void CalculateVelocity()
-    {
-        if (startPosition.y - Input.mousePosition.y > 0)
+	{
+		Vector3 tempVelocity = new Vector3();
+		if (dragStartPosition.y - Input.mousePosition.y > 0)
         {
-            Vector2 temp = new Vector3();
 
-            temp = (startPosition - Input.mousePosition) / 20;
-            if (temp.magnitude < 3f)
-                temp = Vector2.zero;
+			tempVelocity = (dragStartPosition - Input.mousePosition) / 20;
+			if (tempVelocity.magnitude < 3f)
+				tempVelocity = Vector3.zero;
 
-            else if (temp.magnitude > 20f)
+			else if (tempVelocity.magnitude > 20f)
             {
-                temp.Normalize();
-                temp *= 20f;
+				tempVelocity.Normalize();
+				tempVelocity *= 20f;
             }
-
-            newVelocity = temp;
-        }
+		}
+		launchVelocity = tempVelocity;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private void BreakLoop () {
-		if (isSuper) {
-			ChangeColor (Color.white);
-			isSuper = false;
-		}
-		circleCollider.enabled = false;
-		rigidBody.velocity = Vector3.zero;
-		newVelocity = Vector3.zero;
-		isResetting = true;
+	public Vector3 GetLaunchVelocity() {
+		return launchVelocity;
 	}
 
-    private void ResetBall()
-    {
-		if (!isEasy) {
-			if (isSuper) {
-				ChangeColor (Color.white);
-				isSuper = false;
-			}
-			circleCollider.enabled = false;
-			rigidBody.velocity = Vector3.zero;
-			newVelocity = Vector3.zero;
-			isResetting = true;
-		} else {
-			rigidBody.velocity = Vector3.zero;
-			transform.position = new Vector3 (transform.position.x, -4f, 0f);
-			if (isSuper) {
-				ChangeColor (Color.white);
-				isSuper = false;
-			}
-			exPositions [0] = basicVector;
-			exPositions [1] = basicVector;
-			particles.Stop ();
-			isResetting = false;
-			isLaunched = false;
-			loopCount = 0;
-			newVelocity = Vector3.zero;
-		}
-=======
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-    private void ResetBall()
-    {
-        if (isSuper)
-        {
-            ChangeColor(Color.white);
-            isSuper = false;
-        }
-        circleCollider.enabled = false;
-        rigidBody.velocity = Vector3.zero;
-        newVelocity = Vector3.zero;
-        isResetting = true;
-<<<<<<< HEAD
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-    }
+	public void ResetBall() {
+		rigidBody.velocity = Vector3.zero;
+		particles.Stop ();
+		if (spriteRenderer.color == Globals.gold)
+			ChangeColor (Color.white);
+		if (SceneManager.GetActiveScene().name == "Easy")
+			targetPosition = new Vector3 (transform.position.x, -4.5f, 0);
+
+		InvokeRepeating ("MoveBall", 0, 1 / 60f);
+	}
+
+	public void SuperBall() {
+		ChangeColor(Globals.gold);
+	}
+
 }

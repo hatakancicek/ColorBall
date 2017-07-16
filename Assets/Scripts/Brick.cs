@@ -1,123 +1,123 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
 
 public class Brick : MonoBehaviour {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public Sprite[] brickSprites;
 	public GameObject ice;
-    
-    bool isFalling = false, isSuper = false, isFreeze = false;
-=======
-    
-    bool isFalling = false, isSuper = false;
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
-    
-    bool isFalling = false, isSuper = false;
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-    Vector2 position = new Vector2(0f,0f);
+	public BoxCollider2D boxCollider;
+	public SpriteRenderer spriteRenderer;
 
-    // Use this for initialization
-    void Start () {
-        GetComponentInChildren<SpriteRenderer>().color = Globals.mainColors[Random.Range(1, 3)] / 255;
-        Globals.brickCount++;
-<<<<<<< HEAD
-<<<<<<< HEAD
-		GetComponentInChildren<SpriteRenderer> ().sprite = brickSprites [Globals.brickType];
-		GetComponent<SpriteRenderer>().sprite = brickSprites [Globals.brickType];
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+	private BrickSpawnerController controller;
+	private GameController gameController;
+	private bool isFrozen = false;
+	private Vector3 targetPosition;
+
+	public static Action BrickIsDead;
+
+	private void Start() {
+		Fall ();
+		FindComponents ();
+		AddActions ();
+		SetColor ();
+		Globals.brickCount++;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (isFalling)
-        {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), position, 5 * Time.deltaTime);
-        }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<Ball>()) {
+	public void FindComponents() {
+		gameController = FindObjectOfType<GameController> ();
+		controller = FindObjectOfType<BrickSpawnerController> ();
+	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-			if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white || isFreeze)
-=======
-            if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white)
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
-            if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white)
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-            {
-                GetComponent<Animator>().SetTrigger("Death");
-            }
-            collision.gameObject.GetComponent<Ball>().ChangeColor(GetComponent<SpriteRenderer>().color);
-        }
+	public void AddActions() {
+		if (controller)
+			controller.BrickSpawn += Fall;
+		if (gameController) {
+			gameController.Suicide += Die;
+			gameController.Continue += Continue;
+			gameController.Freeze += Freeze;
+			gameController.SuperBall += SuperBall;
+		}
+	}
 
-    }
+	public void SetColor() {
+		if(SceneManager.GetActiveScene().name == "Hard")
+			spriteRenderer.color = Globals.mainColors[UnityEngine.Random.Range(0,3)]/ 255f;
+		else
+			spriteRenderer.color = Globals.mainColors[UnityEngine.Random.Range(1,3)] / 255f;
+	}
+
+	public void Fall()
+	{
+		boxCollider.isTrigger = false;
+		ice.SetActive (false);
+		targetPosition = transform.position + (Vector3.down * 0.8f);
+		InvokeRepeating("MoveBrick", 0, 1/60f);
+	}
 
 	public void Freeze() {
-		Debug.Log ("Frozen");
-		ice.SetActive(true);
-		isFreeze = true;
+		ice.SetActive(true); 
+		isFrozen = true;
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.GetComponent<Ball>())
-            Death();
-        else
-        {
-            GlobalController globe = FindObjectOfType<GlobalController>();
-            globe.GetComponent<GlobalController>().LooseLife();
-            Death();
-        }
-    }
+	public void SuperBall() {
+		boxCollider.isTrigger = true;
+	}
 
-    public void Vanish()
-    {
-        Destroy(GetComponent<BoxCollider2D>());
-    }
+	public void Continue() {
+		if (transform.position.y < 0)
+			Die ();
+	}
 
-    public void Death()
-    {
-        Globals.score++;
-        Globals.brickCount--;
-        Destroy(gameObject);
-    }
+	public void Die() {
+		controller.BrickSpawn -= Fall;
+		gameController.Suicide -= Die;
+		gameController.Continue -= Continue;
+		gameController.Freeze -= Freeze;
+		gameController.SuperBall -= SuperBall;
+		Globals.brickCount--;
+		Globals.score++;
+		if(BrickIsDead != null)
+			BrickIsDead ();
 
-    public void Fall()
-    {
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if (isFreeze) {
-			ice.SetActive (false);
-			isFreeze = false;
+		Destroy (gameObject);
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		Ball ball = collision.gameObject.GetComponent<Ball> ();
+		if (ball) {
+			Color ballColor = ball.GetComponent<SpriteRenderer> ().color;
+			if (isFrozen)
+				Die ();
+			else if (ballColor == spriteRenderer.color)
+				Die ();
+			else if (ballColor == Color.white) {
+				ball.ChangeColor (spriteRenderer.color);
+				Die ();
+			}
+			else
+				ball.ChangeColor (spriteRenderer.color);
 		}
+	}
 
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-        if(isSuper)
-        {
-            isSuper = false;
-            GetComponent<BoxCollider2D>().isTrigger = false;
-        }
-        position = new Vector2(transform.position.x , transform.position.y - 0.8f);
-        isFalling = true;
-    }
+	void OnTriggerEnter2D(Collider2D col) {
+		if (col.GetComponent<Ball> ())
+			Die ();
+	}
 
-    public void SuperBall()
-    {
-        isSuper = true;
-        GetComponent<BoxCollider2D>().isTrigger = true;
-    }
+	private void MoveBrick()
+	{
+		if (transform.position.y < -4 && gameController.Loose != null) {
+			CancelInvoke ();
+			gameController.Loose ();
+		}
+		else {
+			transform.position = Vector3.MoveTowards (transform.position, targetPosition, 10 * Time.deltaTime);
+			if (transform.position == targetPosition) {
+				CancelInvoke ();
+			}
+		}
+	}
 }

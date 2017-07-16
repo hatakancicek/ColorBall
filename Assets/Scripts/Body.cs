@@ -5,11 +5,12 @@ using UnityEngine.EventSystems;
 
 public class Body : MonoBehaviour, IPointerDownHandler
 {
-    public Ball ball;
+	public delegate void TouchDelegate ();
+	public static event TouchDelegate touchEvent;
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        ball.isDrag = true;
-        ball.startPosition = Input.mousePosition;
+		if (touchEvent != null)
+			touchEvent ();
     }
 }

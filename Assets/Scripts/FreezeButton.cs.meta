@@ -1,13 +1,7 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/Scripts/FreezeButton.cs.meta
 guid: e56efbfb23d8549ae82ef66f557634a5
 timeCreated: 1499523758
 licenseType: Free
-=======
-guid: 8aa22c967563e93408d5314612d7bb10
-timeCreated: 1499333475
-licenseType: Pro
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d:Assets/Finish.cs.meta
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []

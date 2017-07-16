@@ -1,51 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BrickSpawnerController : MonoBehaviour {
 
     public int turnsAsFrozen = 0;
     public BrickSpawner[] brickSpawners;
+	public Bottom bottom;
+	public GameController controller;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	private int luckySpawnerID = 0;
 
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+	public Action BrickSpawn;
+
 	// Use this for initialization
 	void Start () {
+		bottom.ballTouchedBottom += SpawnBricks;
+		controller.Freeze += Freeze;
+		controller.Continue += SpawnBricks;
+		controller.Suicide += SpawnBricks;
         SpawnBricks();
 	}
 
     public void SpawnBricks()
     {
-        if (turnsAsFrozen == 0)
+		if (turnsAsFrozen == 0 || Globals.brickCount == 0)
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
+			turnsAsFrozen = 0;
 			while(luckySpawnerID == Globals.previouslySelectedSpawner)
-            	luckySpawnerID = Random.Range(0, 5);
+            	luckySpawnerID = UnityEngine.Random.Range(0, 5);
 			Globals.previouslySelectedSpawner = luckySpawnerID;
-=======
-            int luckySpawnerID = Random.Range(0, 5);
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
-=======
-            int luckySpawnerID = Random.Range(0, 5);
->>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
             brickSpawners[luckySpawnerID].isLucky = true;
-            foreach (BrickSpawner brickSpawner in brickSpawners)
-                brickSpawner.SpawnBrick();
+			if(BrickSpawn != null)
+				BrickSpawn ();
         }
         else
             turnsAsFrozen--;
     }
 
-    public void SuperBall()
-    {
-        foreach(BrickSpawner brickSpawner in brickSpawners)
-            brickSpawner.SuperBall();
-    }
+	public void Freeze() {
+		turnsAsFrozen = 3;
+	}
 }

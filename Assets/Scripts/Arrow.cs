@@ -4,21 +4,37 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour {
 
-    public Ball ball;
+	public Ball ball;
 
-	void Update ()
-    {
-        transform.localScale = Vector3.zero;
-        if (ball.isDrag)
-        {
-            MoveArrow();
-        }
-    }
+	private GameTouchArea gameTouchArea;
 
-    void MoveArrow()
+	void Start() {
+		gameTouchArea = FindObjectOfType<GameTouchArea> ();
+		if (gameTouchArea) {
+			gameTouchArea.touchDownEvent += DragStart;
+			gameTouchArea.touchUpEvent += DragEnd;
+		}
+		transform.localScale = Vector3.zero;
+	}
+
+	private void DragStart() {
+		InvokeRepeating ("DragStay", 0, 1 / 60f);
+	}
+
+	private void DragStay() {
+		MoveArrow ();
+	}
+
+	private void DragEnd() {
+		CancelInvoke ();
+		transform.localScale = Vector3.zero;
+	}
+
+	void MoveArrow()
     {
-        transform.localScale = new Vector3(0.5f, ball.newVelocity.magnitude / (-4), 1f);
-        float angle = Vector3.Angle(ball.newVelocity, Vector3.right) - 90f;
+		Vector3 ballVelocity = ball.GetLaunchVelocity ();
+		float angle = Vector3.Angle(ballVelocity, Vector3.right) - 90f;
+		transform.localScale = new Vector3(0.5f, ballVelocity.magnitude / (-6), 1f);
         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
     }
 }
