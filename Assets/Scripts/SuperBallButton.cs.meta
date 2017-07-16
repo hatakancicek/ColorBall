@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/SuperBallButton.cs.meta
+guid: 84701e1264b8b4c178564cc9de42db9a
+timeCreated: 1499523745
+licenseType: Free
+=======
+guid: 98e3484bd50d2de4e8e7298e905cf5b7
+timeCreated: 1499340646
+licenseType: Pro
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d:Assets/Global.cs.meta
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

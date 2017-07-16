@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/SuicideText.cs.meta
+guid: 1957d2f1692574e2f990ede4f6d12879
+timeCreated: 1499600828
+licenseType: Free
+=======
+guid: c3fead4bc7d7e5948952bb0fa17a947e
+timeCreated: 1499417983
+licenseType: Pro
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d:Assets/Body.cs.meta
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
