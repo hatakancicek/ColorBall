@@ -8,8 +8,11 @@ public class BrickSpawnerController : MonoBehaviour {
     public BrickSpawner[] brickSpawners;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private int luckySpawnerID = 0;
 
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 	// Use this for initialization
@@ -22,9 +25,13 @@ public class BrickSpawnerController : MonoBehaviour {
         if (turnsAsFrozen == 0)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			while(luckySpawnerID == Globals.previouslySelectedSpawner)
             	luckySpawnerID = Random.Range(0, 5);
 			Globals.previouslySelectedSpawner = luckySpawnerID;
+=======
+            int luckySpawnerID = Random.Range(0, 5);
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
             int luckySpawnerID = Random.Range(0, 5);
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d

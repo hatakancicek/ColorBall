@@ -5,7 +5,11 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public bool isDrag = false, disabled = false, isEasy = false;
+=======
+    public bool isDrag = false, disabled = false;
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
     public bool isDrag = false, disabled = false;
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
@@ -19,6 +23,10 @@ public class Ball : MonoBehaviour {
     public Vector3 startPosition;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
@@ -28,10 +36,13 @@ public class Ball : MonoBehaviour {
     private Vector3 basicVector = new Vector3(0f, -20f, 0f);
     private Vector3[] exPositions = {new Vector3(0f,-20f,0f), new Vector3(0f,-20f,0f) };
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	void Awake() {
 		Application.targetFrameRate = 60;
 	}
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 
@@ -117,7 +128,11 @@ public class Ball : MonoBehaviour {
             brickSpawnerController.SpawnBricks();
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 		else if(!(collision.gameObject.GetComponent<Brick>()))
+=======
+        else
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
         else
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
@@ -159,6 +174,7 @@ public class Ball : MonoBehaviour {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private void BreakLoop () {
 		if (isSuper) {
 			ChangeColor (Color.white);
@@ -197,6 +213,8 @@ public class Ball : MonoBehaviour {
 			newVelocity = Vector3.zero;
 		}
 =======
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     private void ResetBall()
     {
         if (isSuper)
@@ -208,6 +226,9 @@ public class Ball : MonoBehaviour {
         rigidBody.velocity = Vector3.zero;
         newVelocity = Vector3.zero;
         isResetting = true;
+<<<<<<< HEAD
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+=======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     }
 }

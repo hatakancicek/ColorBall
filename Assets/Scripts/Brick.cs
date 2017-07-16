@@ -5,10 +5,15 @@ using UnityEngine;
 public class Brick : MonoBehaviour {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Sprite[] brickSprites;
 	public GameObject ice;
     
     bool isFalling = false, isSuper = false, isFreeze = false;
+=======
+    
+    bool isFalling = false, isSuper = false;
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
     
     bool isFalling = false, isSuper = false;
@@ -20,8 +25,11 @@ public class Brick : MonoBehaviour {
         GetComponentInChildren<SpriteRenderer>().color = Globals.mainColors[Random.Range(1, 3)] / 255;
         Globals.brickCount++;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		GetComponentInChildren<SpriteRenderer> ().sprite = brickSprites [Globals.brickType];
 		GetComponent<SpriteRenderer>().sprite = brickSprites [Globals.brickType];
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 	}
@@ -39,7 +47,11 @@ public class Brick : MonoBehaviour {
         if (collision.gameObject.GetComponent<Ball>()) {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white || isFreeze)
+=======
+            if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white)
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
             if (collision.gameObject.GetComponent<SpriteRenderer>().color == GetComponent<SpriteRenderer>().color || collision.gameObject.GetComponent<SpriteRenderer>().color == Color.white)
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
@@ -84,11 +96,14 @@ public class Brick : MonoBehaviour {
     public void Fall()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (isFreeze) {
 			ice.SetActive (false);
 			isFreeze = false;
 		}
 
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
         if(isSuper)

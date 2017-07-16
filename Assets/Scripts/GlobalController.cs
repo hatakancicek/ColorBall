@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using UnityEngine.SceneManagement;
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 
@@ -16,6 +19,7 @@ public class GlobalController : MonoBehaviour {
     public Animator animator;
     public BrickSpawnerController brickSpawnerController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Fader fader;
 
     private Brick[] bricks;
@@ -27,6 +31,11 @@ public class GlobalController : MonoBehaviour {
 		PlayerPrefs.SetInt ("refillCount", 3);
 	}
 
+=======
+
+    private Brick[] bricks;
+
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 
     private Brick[] bricks;
@@ -51,6 +60,7 @@ public class GlobalController : MonoBehaviour {
 
     public void Restart()
 <<<<<<< HEAD
+<<<<<<< HEAD
 	{
 		fader.isLost = false;
 		animator.SetTrigger("MakeChoice");
@@ -60,6 +70,8 @@ public class GlobalController : MonoBehaviour {
 		foreach (Brick brick in bricks)
 			brick.GetComponent<Brick>().Death();
 =======
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     {
         RefillLife();
         animator.SetTrigger("Choose");
@@ -67,6 +79,9 @@ public class GlobalController : MonoBehaviour {
         FindBricks();
         foreach (Brick brick in bricks)
            brick.GetComponent<Brick>().Death();
+<<<<<<< HEAD
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+=======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
         Globals.score = 0;
         brickSpawnerController.SpawnBricks();
@@ -75,6 +90,7 @@ public class GlobalController : MonoBehaviour {
     }
 
     public void ContinueGame()
+<<<<<<< HEAD
 <<<<<<< HEAD
 	{
 		fader.isLost = false;
@@ -87,6 +103,8 @@ public class GlobalController : MonoBehaviour {
                 brick.GetComponent<Brick>().Death();
 		brickSpawnerController.SpawnBricks();
 =======
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     {
         RefillLife();
         animator.SetTrigger("Choose");
@@ -96,12 +114,16 @@ public class GlobalController : MonoBehaviour {
             if(brick.transform.position.y < 0f)
                 brick.GetComponent<Brick>().Death();
         brickSpawnerController.SpawnBricks();
+<<<<<<< HEAD
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+=======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
         if (ball.disabled)
             ball.disabled = false;
     }
 
     public void LooseGame()
+<<<<<<< HEAD
 <<<<<<< HEAD
 	{
 		fader.isLost = true;
@@ -138,6 +160,8 @@ public class GlobalController : MonoBehaviour {
 
 	}
 =======
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
     {
         Ball target = ballSpawner.transform.GetChild(1).GetComponent<Ball>();
         if (target)
@@ -155,6 +179,9 @@ public class GlobalController : MonoBehaviour {
         ball.SuperBall();
         brickSpawnerController.SuperBall();
     }
+<<<<<<< HEAD
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
+=======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 
     private void RefillLife()
@@ -168,6 +195,7 @@ public class GlobalController : MonoBehaviour {
         bricks = FindObjectsOfType<Brick>();
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public void ShowShop() {
 		animator.SetTrigger ("ShowShop");
@@ -192,6 +220,8 @@ public class GlobalController : MonoBehaviour {
 	public void GoBack() {
 		SceneManager.LoadScene("Main Menu");
 	}
+=======
+>>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 =======
 >>>>>>> 50557eef3abe8b20bef319023738843247cf7a0d
 }
