@@ -18,11 +18,11 @@ public class Brick : MonoBehaviour {
 	public static Action BrickIsDead;
 
 	private void Start() {
-		Fall ();
 		FindComponents ();
 		AddActions ();
 		SetColor ();
 		Globals.brickCount++;
+		FirstFall ();
 	}
 
 	public void FindComponents() {
@@ -53,6 +53,15 @@ public class Brick : MonoBehaviour {
 		boxCollider.isTrigger = false;
 		ice.SetActive (false);
 		targetPosition = transform.position + (Vector3.down * 0.8f);
+		InvokeRepeating("MoveBrick", 0, 1/60f);
+	}
+
+	public void FirstFall() 
+	{
+
+		boxCollider.isTrigger = false;
+		ice.SetActive (false);
+		targetPosition = transform.position + (Vector3.down * 1.8f);
 		InvokeRepeating("MoveBrick", 0, 1/60f);
 	}
 
